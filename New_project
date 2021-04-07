@@ -1,0 +1,35 @@
+1. Создать папку для проекта
+2. Создать файл requirements.txt
+3. Создать виртуальное окружение
+4. Активировать
+5. При помощи pip устанавливаем доп модули
+pip install -r requirements.txt
+6. Создаём django проект
+django-admin startproject shop .
+7. Создать базу данных в psql
+CREATE DATABASE
+Сделать настройки проекта
+8. Определить структуру проекта
+9. Создём приложения (application)
+(
+python manage.py startapp account
+python manage.py startapp product
+python manage.py startapp order
+
+settings +
+INSTALLED_APPS +
+
+    'account',
+    'order',
+    'product',
+
+)
+python mange.py startapp имя_приложения
+10. Определить сущности (модели) и создать под них классы
+11. Создать базу данных в psql
+Сделать настройки проекта
+12. Определить модель пользователя (стандартная или кастомная)
+13. Сделать миграции (ORM)
+python manage.py makemigration
+python manage.py migrate
+14.
