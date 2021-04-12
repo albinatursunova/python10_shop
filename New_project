@@ -1,7 +1,12 @@
 1. Создать папку для проекта
 2. Создать файл requirements.txt
+    Django==3.1
+    psycopg2-binary==2.8.6 - библиотека отвечает для работы с БД
+    Pillow==7.1 - для обработки картинки
 3. Создать виртуальное окружение
+python3 -m venv env
 4. Активировать
+source env/bin/activate
 5. При помощи pip устанавливаем доп модули
 pip install -r requirements.txt
 6. Создаём django проект
@@ -29,7 +34,7 @@ python mange.py startapp имя_приложения
 11. Создать базу данных в psql
 Сделать настройки проекта
 12. Определить модель пользователя (стандартная или кастомная)
-13. Сделать миграции (ORM)
-python manage.py makemigration
+13. Сделать миграции (ORM) (для работы моделей)
+python manage.py makemigrations
 python manage.py migrate
 14.
