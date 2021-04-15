@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'django_filters',
+
     'account',
     'order',
     'product',
@@ -130,3 +132,14 @@ STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'yellowcoffee24@gmail.com'
+EMAIL_HOST_PASSWORD = 'oaeaebcegktfspze'
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'index-page'
+LOGOUT_REDIRECT_URL = 'index-page'

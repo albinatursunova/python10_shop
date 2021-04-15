@@ -155,7 +155,8 @@ admin.site.register(Product)
 # SELECT * FROM   product WHERE price >= 20000;
 
 # Product.objects.filter(price = 20000)
-# SELECT * FROM product WHERE pice = 20000;
+# SELECT * FROM product WHERE pr
+ice = 20000;
 
 # __range -> BETWEEN
 #

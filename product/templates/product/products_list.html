@@ -1,14 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Список продуктов</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block title %}Список продуктов{% endblock title %}
+{% block body %}
   <h1>Товары</h1>
 
   {% for prod in products %}
     <a href="{% url 'product-details' prod.id %}">{{ prod.title }}</a>
   {% endfor %}
-</body>
-</html>
+
+  <div class=""pagination>
+      {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}">Предыдущая страница</a>
+      {%  endif %}
+      <span>Страница: {{ page_obj.number }}</span>
+      {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">Следующая страница</a>
+      {% endif %}
+  </div>
+
+{% endblock body %}
