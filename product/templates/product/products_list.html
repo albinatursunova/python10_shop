@@ -2,12 +2,12 @@
 {% block title %}Список продуктов{% endblock title %}
 {% block body %}
   <h1>Товары</h1>
-
+  <a href="{% url 'create-product' %}" type="button">Добавить новый продукт</a>
   {% for prod in products %}
     <a href="{% url 'product-details' prod.id %}">{{ prod.title }}</a>
   {% endfor %}
 
-  <div class=""pagination>
+  <div class="pagination">
       {% if page_obj.has_previous %}
       <a href="?page={{ page_obj.previous_page_number }}">Предыдущая страница</a>
       {%  endif %}

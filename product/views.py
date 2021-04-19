@@ -1,12 +1,14 @@
 # 1. Импорт из стандартной библиотеки python
 # 2. Импорты из сторонних библиотек (Django, psycopg, ...)
 import django_filters
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.shortcuts import render
-from django.views.generic import DetailView, ListView
-# 3. Импррты из проекта
-from .models import Category, Product
-from django_filters.views import FilterView
+from django.urls import reverse_lazy
+from django.views import View
+from django.views.generic import DetailView, ListView, DeleteView
+# 3. Импорты из проекта
+from .forms import CreateProductForm, ImageFormSet
+from .models import Category, Product, ProductImage
 
 
 def index(request):
@@ -39,7 +41,7 @@ class ProductListView(ListView):
     model = Product
     template_name = 'product/products_list.html'
     context_object_name = 'products'
-    paginate_by = 10 #pagination
+    paginate_by = 3 #pagination
     # products/category?price_from=1000&price_to=2000
 
     # Product.objects.all
@@ -71,9 +73,54 @@ class ProductDetailsView(DetailView):
     context_object_name = 'product'
 
 
-# TODO: переписать все вью на классы
-# TODO: Сделать пагинацию списка товаров
-# TODO: Сделать фильтрацию
-# TODO: Сделать поиск
-# TODO: Сделать верстку
-# TODO: Добавить 10 товаров в катологе
+
+
+class CreateProductView(View):
+    def get(self, request):
+        form = CreateProductForm()
+        images_form = ImageFormSet(queryset=ProductImage.objects.none())
+        return render(request, 'products/create.html', locals())
+
+    def post(self, request):
+        form = CreateProductForm(request.POST)
+        images_form = ImageFormSet(request.POST, request.FILES, queryset=ProductImage.objects.none())
+        if form.is_valid() and images_form.is_valid():
+            product = form.save()
+            for i_form in  images_form:
+                image = i_form.get('image')
+                if image is not None:
+                    pic = ProductImage(product=product, image=image)
+                    pic.save()
+            return redirect(product.get_absolute_url())
+        print(form.errors, images_form.errors)
+
+
+class ProductDeleteView(DeleteView):
+    model = Product
+    template_name = 'products/delete.html'
+    success_url = reverse_lazy('index-page')
+
+class ProductEditView(View):
+    def get(self, request, pk):
+        product = get_object_or_404(Product, pk=pk)
+        form = CreateProductForm(isinstance=product, data=request.POST)
+        images_form = ImageFormSet(queriset=product.images.all())
+        return render(request, 'product/edit.html', locals())
+
+    def post(self, request, pk):
+        product = get_object_or_404(Product, pk=pk)
+        form = CreateProductForm(isinstance=product, data=request.POST)
+        images_form = ImageFormSet(request.POST, request.FILES, queriset=product.images.all())
+        if form.is_valid() and images_form.is_valid():
+            product = form.save()
+            for i_from in images_form.cleaned_data:
+                image = form.get('image')
+                if image is not None and ProductImage.objects.filter(product=product, image=image).exists():
+                    pic = ProductImage(product=product, image=image)
+                    pic.save()
+            for i_form in images_form.deleted_forms:
+                image = i_form.cleaned_data.get('id')
+                if image is not None:
+                    image.delete()
+            return redirect(product.get_absolute_url())
+        print(form.errors, images_form.errors)

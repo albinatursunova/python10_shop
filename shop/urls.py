@@ -18,7 +18,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
-from product.views import IndexPageView, ProductDetailsView, ProductListView
+from product.views import IndexPageView, ProductDetailsView, ProductListView, CreateProductView, ProductDeleteView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,4 +26,6 @@ urlpatterns = [
     path('', IndexPageView.as_view(), name='index-page'),
     path('products/<slug:category_slug>/', ProductListView.as_view(), name='products-list'),
     path('products/details/<int:pk>/', ProductDetailsView.as_view(), name="product-details"),
+    path('product/create/', CreateProductView.as_view(), name='create-product'),
+    path('product/delete/<int:pk>/', ProductDeleteView.as_view(), name='delete-product'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

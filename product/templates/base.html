@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock title %}</title>
+</head>
+<body>
+  <div class="header">
+      {% if user.is_authenticated %}
+      <span>Hello, {{ user.email }}</span>
+      <a href="{% url 'logout' %}">Выйти</a>
+      {% else %}
+      <span><a href="{% url 'login' %}">Войдите</a> или <a href="{% url 'register' %}">Зарегистрируйтесь</a></span>
+      {% endif %}
+  </div>
+  {% block body %}{% endblock body %}
+</body>
+</html>
